@@ -68,3 +68,4 @@ def restart_api():
     (Path(__file__).parent / "../entrypoints/flask_app.py").touch()
     time.sleep(0.5)
     wait_for_webapp_to_come_up()
+    

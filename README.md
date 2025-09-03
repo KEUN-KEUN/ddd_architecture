@@ -74,6 +74,10 @@ pytest tests/e2e
 
 There are more useful commands in the makefile, have a look and try them out.
 
-## ddd의 간략한 구조
+
+## ddd의 폴더 구조
 <img width="285" height="657" alt="image" src="https://github.com/user-attachments/assets/33db50ff-8de8-4aac-a944-fc0ef0a78012" />
 
+
+## 계층 구조
+![alt text](image.png)

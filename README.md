@@ -80,5 +80,5 @@ There are more useful commands in the makefile, have a look and try them out.
 
 
 ## 계층 구조
-<img width="250" height="500" alt="image" src="image.png" />
-![alt text](image.png)
+<img width="300" height="700" alt="image" src="image.png" />
+

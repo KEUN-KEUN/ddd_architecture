@@ -82,3 +82,7 @@ There are more useful commands in the makefile, have a look and try them out.
 ## 계층 구조
 <img width="300" height="700" alt="image" src="image.png" />
 
+## 계층 구조 2
+<img width="400" height="800" alt="image" src="https://github.com/user-attachments/assets/5afd3fa7-79e9-4976-afb5-c9043f700748" />
+
+

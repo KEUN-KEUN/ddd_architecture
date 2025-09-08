@@ -1,5 +1,6 @@
 # app
-sqlalchemy
+#sqlalchemy
+sqlalchemy<2.0
 flask
 psycopg2-binary
 

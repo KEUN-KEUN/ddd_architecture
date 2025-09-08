@@ -10,16 +10,16 @@ class FakeRepository(repository.AbstractRepository):
     def add(self, batch):
         self._batches.add(batch)
 
-    def get(self, reference):
-        return next(b for b in self._batches if b.reference == reference)
+    def get(self, sku):
+        return next(p for p in self._batches if p.sku == sku), None
 
     def list(self):
         return list(self._batches)
 
 
-class FakeUnitOfWork(unit_of_work.AbstarctUnitOfWork):
+class FakeUnitOfWork(unit_of_work.AbstractUnitOfWork):
     def __init__(self):
-        self.batches = FakeRepository([])
+        self.products = FakeRepository([])
         self.committed = False
 
     def commit(self):
@@ -29,10 +29,10 @@ class FakeUnitOfWork(unit_of_work.AbstarctUnitOfWork):
         pass
 
 
-def test_add_batch():
+def test_add_batch_for_new_product():
     uow = FakeUnitOfWork()
     services.add_batch("b1", "CRUNCHY-ARMCHAIR", 100, None, uow)
-    assert uow.batches.get("b1") is not None
+    assert uow.products.get("CRUNCHY-ARMCHAIR") is not None
     assert uow.committed
 
 
@@ -41,6 +41,7 @@ def test_allocate_returns_allocation():
     services.add_batch("b1", "ADORABLE-SETTEE", 100, None, uow)
     result = services.allocate("o1", "ADORABLE-SETTEE", 10, uow)
     assert result == "batch1"
+    #assert result == "b1"
 
 
 def test_allocate_errors_for_invalid_sku():

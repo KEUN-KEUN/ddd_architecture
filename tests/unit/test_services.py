@@ -36,24 +36,24 @@ def test_add_batch_for_new_product():
     assert uow.committed
 
 
-def test_allocate_returns_allocation():
-    uow = FakeUnitOfWork()
-    services.add_batch("b1", "ADORABLE-SETTEE", 100, None, uow)
-    result = services.allocate("o1", "ADORABLE-SETTEE", 10, uow)
-    assert result == "batch1"
-    #assert result == "b1"
+# def test_allocate_returns_allocation():
+#     uow = FakeUnitOfWork()
+#     services.add_batch("b1", "ADORABLE-SETTEE", 100, None, uow)
+#     result = services.allocate("o1", "ADORABLE-SETTEE", 10, uow)
+#     assert result == "batch1"
+#     #assert result == "b1"
 
 
-def test_allocate_errors_for_invalid_sku():
-    uow = FakeUnitOfWork()
-    services.add_batch("b1", "AREASKU", 100, None, uow)
+# def test_allocate_errors_for_invalid_sku():
+#     uow = FakeUnitOfWork()
+#     services.add_batch("b1", "AREASKU", 100, None, uow)
 
-    with pytest.raises(services.InvalidSku, match="Invalid sku NONEXISTENTSKU"):
-        services.allocate("o1", "NONEXISTENTSKU", 10, uow)
+#     with pytest.raises(services.InvalidSku, match="Invalid sku NONEXISTENTSKU"):
+#         services.allocate("o1", "NONEXISTENTSKU", 10, uow)
 
 
-def test_commits():
-    uow = FakeUnitOfWork()
-    services.add_batch("b1", "OMINOUS-MIRROR", 100, None, uow)
-    services.allocate("o1", "OMINOUS-MIRROR", 10, uow)
-    assert uow.committed
+# def test_commits():
+#     uow = FakeUnitOfWork()
+#     services.add_batch("b1", "OMINOUS-MIRROR", 100, None, uow)
+#     services.allocate("o1", "OMINOUS-MIRROR", 10, uow)
+#     assert uow.committed

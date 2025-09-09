@@ -11,6 +11,10 @@ from ..random_refs import random_sku, random_batchref, random_orderid
 
 def insert_batch(session, ref, sku, qty, eta, product_version=1):
     session.execute(
+        "INSERT INTO products(sku, version_number) VALUES (:sku, :version)",
+        dict(sku=sku, version=product_version)
+    )
+    session.execute(
         "INSERT INTO batches(reference, sku, _purchased_quantity, eta)"
         " VALUES (:ref, :sku, :qty, :eta)",
         dict(ref=ref, sku=sku, qty=qty, eta=eta),
@@ -38,6 +42,9 @@ def test_uow_can_retrieve_a_batch_and_allocate_to_it(session_factory):
     uow = unit_of_work.SqlAlchemyUnitOfWork(session_factory)    
     with uow:
         product = uow.products.get(sku="HIPSTER-WORKBENCH") 
+        # print("*******************************************************")
+        # print(f"product.get: {product.__dict__}")
+        # print("*******************************************************")
         line = model.OrderLine("o1", "HIPSTER-WORKBENCH", 10)
         product.allocate(line)
         uow.commit()
@@ -53,6 +60,7 @@ def test_rolls_back_uncommitted_work_by_default(session_factory):
 
     new_session = session_factory()
     rows = list(new_session.execute('SELECT * FROM batches'))
+    # print(f"****************************************************** ROWS: {rows}")
     assert rows == []
 
 

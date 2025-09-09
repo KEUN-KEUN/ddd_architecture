@@ -13,6 +13,7 @@ class Product:
         self.sku = sku
         self.batches = batches
         self.version_number = version_number
+        
     def allocate(self, line: OrderLine) -> str:
         try:
             batch = next(b for b in sorted(self.batches) if b.can_allocate(line))

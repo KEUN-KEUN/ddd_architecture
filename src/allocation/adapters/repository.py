@@ -4,11 +4,11 @@ from allocation.domain import model
 
 class AbstractRepository(abc.ABC):
     @abc.abstractmethod
-    def add(self, batch: model.Batch):
+    def add(self, product: model.Product):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get(self, reference) -> model.Batch:
+    def get(self, reference) -> model.Product:
         raise NotImplementedError
 
 

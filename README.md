@@ -18,4 +18,4 @@
 <img width="521" height="352" alt="image" src="https://github.com/user-attachments/assets/f39a7fc5-8370-4be4-a64b-36df4c68de69" />
 
 ## 메시지 버스 구조 2
-<img width="1113" height="844" alt="image" src="https://github.com/user-attachments/assets/a90a7a67-00b3-4724-b899-9ca09722c689" />
+<img width="521" height="352" alt="image" src="https://github.com/user-attachments/assets/a90a7a67-00b3-4724-b899-9ca09722c689" />

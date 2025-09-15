@@ -14,5 +14,8 @@
 <img width="1061" height="345" alt="image" src="https://github.com/user-attachments/assets/49cf30d4-c34f-4df8-9e5e-2ab4f0980997" />
 
 # Event Driven 설계
-## 메시지 버스 구조
+## 메시지 버스 구조 1
 <img width="521" height="352" alt="image" src="https://github.com/user-attachments/assets/f39a7fc5-8370-4be4-a64b-36df4c68de69" />
+
+## 메시지 버스 구조 2
+<img width="1113" height="844" alt="image" src="https://github.com/user-attachments/assets/a90a7a67-00b3-4724-b899-9ca09722c689" />

@@ -36,7 +36,7 @@ class AbstractRepository(abc.ABC):
     def _get_by_batchref(self, batchref) -> model.Product:
         raise NotImplementedError
     
-
+    
 class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session):
         super().__init__()

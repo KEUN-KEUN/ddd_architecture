@@ -47,10 +47,8 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
         self.session_factory = session_factory
 
     def __enter__(self):
-        self.session: Session = self.session_factory()
-        self.products = repository.TrackingRepository(
-            repository.SqlAlchemyRepository(self.session)    
-        )
+        self.session  = self.session_factory()
+        self.products = repository.SqlAlchemyRepository(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):

@@ -1,7 +1,8 @@
 from __future__ import annotations
+from dataclasses import asdict
 from typing import TYPE_CHECKING
-from allocation.adapters import email
-from allocation.domain import events, model
+from allocation.adapters import email, redis_eventpublisher
+from allocation.domain import events, model, commands
 from allocation.domain.model import OrderLine 
 
 
@@ -60,3 +61,38 @@ def send_out_of_stock_notification(
         "stock@example.com",
         f"Out of stock for SKU {event.sku}",
     )
+
+def publish_allocated_event(
+    event: events.Allocated,
+    uow: unit_of_work.AbstractUnitOfWork,
+):
+    redis_eventpublisher.publish("line_allocated", event)
+
+def publish_allocation_to_read_model(
+        event: events.Allocated,
+        uow: unit_of_work.SqlAlchemyUnitOfWork,
+):
+    with uow:
+        uow.session.execute(
+            """
+            INSERT INTO allocations_view (orderid, sku, batchref)
+            VALUES (:orderid, :sku, :batchref)
+            """,
+            dict(orderid=event.orderid, sku=event.sku, batchref=event.batchref),
+        )
+        uow.commit()
+
+
+def remove_allocation_from_read_model(
+    event: events.Deallocated,
+    uow: unit_of_work.SqlAlchemyUnitOfWork,
+)
+    with uow:
+        uow.session.execute(
+            """
+            DELETE FROM allocations_view
+            WHERE orderid = :orderid AND sku = :sku
+            """,
+            dict(orderid=event.orderid, sku=event.sku),
+        )
+        uow.commit()

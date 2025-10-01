@@ -25,3 +25,6 @@
 
 ## 읽기와 쓰기의 분리
 <img width="521" height="352" alt="image" src="https://github.com/user-attachments/assets/1da8e0f6-cf36-4796-b0fa-9bf72a731686" />
+
+## 의존성 주입(부트 스트래핑)
+<img width="521" height="352" alt="image" src="https://github.com/user-attachments/assets/346604b2-fe72-4bda-87f0-b058f45dbb48" />

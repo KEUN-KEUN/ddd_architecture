@@ -23,3 +23,5 @@
 ## message handler - Event / Command 분리 1
 <img width="521" height="352" alt="image" src="https://github.com/user-attachments/assets/c56fca0b-1731-493f-ac72-ba2b9120275b" />
 
+## 읽기와 쓰기의 분리
+<img width="521" height="352" alt="image" src="https://github.com/user-attachments/assets/1da8e0f6-cf36-4796-b0fa-9bf72a731686" />

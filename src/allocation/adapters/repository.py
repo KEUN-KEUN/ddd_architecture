@@ -6,7 +6,7 @@ from allocation.domain import model
 
 class AbstractRepository(abc.ABC):
     def __init__(self):
-        self.seen = set()
+        self.seen = set()  # type: Set[model.Product]
 
     def add(self, product: model.Product):
         self._add(product)
@@ -17,7 +17,7 @@ class AbstractRepository(abc.ABC):
         if product:
             self.seen.add(product)
         return product
-    
+
     def get_by_batchref(self, batchref) -> model.Product:
         product = self._get_by_batchref(batchref)
         if product:
@@ -35,8 +35,8 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def _get_by_batchref(self, batchref) -> model.Product:
         raise NotImplementedError
-    
-    
+
+
 class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session):
         super().__init__()
@@ -52,6 +52,8 @@ class SqlAlchemyRepository(AbstractRepository):
         return (
             self.session.query(model.Product)
             .join(model.Batch)
-            .filter(orm.batches.c.reference == batchref)
+            .filter(
+                orm.batches.c.reference == batchref,
+            )
             .first()
         )

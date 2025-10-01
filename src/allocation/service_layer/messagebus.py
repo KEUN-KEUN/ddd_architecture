@@ -1,3 +1,4 @@
+# pylint: disable=broad-except
 from __future__ import annotations
 import logging
 from typing import List, Dict, Callable, Type, Union, TYPE_CHECKING
@@ -11,22 +12,17 @@ logger = logging.getLogger(__name__)
 
 Message = Union[commands.Command, events.Event]
 
-def handle(
-    message: Message,
-    uow: unit_of_work.AbstractUnitOfWork,
-):
-    results = []
+
+def handle(message: Message, uow: unit_of_work.AbstractUnitOfWork):
     queue = [message]
     while queue:
         message = queue.pop(0)
         if isinstance(message, events.Event):
             handle_event(message, queue, uow)
         elif isinstance(message, commands.Command):
-            cmd_result = handle_command(message, queue, uow)
-            results.append(cmd_result)
+            handle_command(message, queue, uow)
         else:
             raise Exception(f"{message} was not an Event or Command")
-    return results
 
 
 def handle_event(
@@ -36,11 +32,11 @@ def handle_event(
 ):
     for handler in EVENT_HANDLERS[type(event)]:
         try:
-            logger.debug(f"Handling event {event} with handler {handler}")
-            handler(event, uow)
+            logger.debug("handling event %s with handler %s", event, handler)
+            handler(event, uow=uow)
             queue.extend(uow.collect_new_events())
         except Exception:
-            logger.error(f"Error handling event {event}")
+            logger.exception("Exception handling event %s", event)
             continue
 
 
@@ -49,23 +45,31 @@ def handle_command(
     queue: List[Message],
     uow: unit_of_work.AbstractUnitOfWork,
 ):
-    logger.debug(f"Handling command {command}")
+    logger.debug("handling command %s", command)
     try:
         handler = COMMAND_HANDLERS[type(command)]
-        result = handler(command, uow=uow)
+        handler(command, uow=uow)
         queue.extend(uow.collect_new_events())
-        return result
     except Exception:
-        logger.error(f"Error handling command {command}")
+        logger.exception("Exception handling command %s", command)
         raise
 
 
 EVENT_HANDLERS = {
+    events.Allocated: [
+        handlers.publish_allocated_event,
+        handlers.add_allocation_to_read_model,
+    ],
+    events.Deallocated: [
+        handlers.remove_allocation_from_read_model,
+        handlers.reallocate,
+    ],
     events.OutOfStock: [handlers.send_out_of_stock_notification],
-}
+}  # type: Dict[Type[events.Event], List[Callable]]
 
 COMMAND_HANDLERS = {
     commands.Allocate: handlers.allocate,
-    events.BatchCreated: handlers.add_batch,
-    events.BatchQuantityChanged: handlers.change_batch_quantity,
-}
+    commands.CreateBatch: handlers.add_batch,
+    commands.ChangeBatchQuantity: handlers.change_batch_quantity,
+}  # type: Dict[Type[commands.Command], Callable]
+
